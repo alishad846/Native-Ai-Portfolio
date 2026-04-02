@@ -1,4 +1,4 @@
-# 🚀 Portfolio Setup Instructions for Yuvraj
+# 🚀 Portfolio Setup Instructions for Shad Ali
 
 ## 📋 **Step 1: Install Dependencies**
 
@@ -45,7 +45,7 @@ Visit `http://localhost:3000` to test your portfolio.
 
 ## ✅ **What's Been Updated:**
 
-- ✅ **Personal Information**: Yuvraj Singh, 22, Gurugram
+- ✅ **Personal Information**: Shad Ali, 23, Jaipur
 - ✅ **Contact Details**: Email, phone, LinkedIn, GitHub, Instagram
 - ✅ **AI Personality**: Customized with your background and experience
 - ✅ **API Integration**: Switched from OpenAI to Mistral AI
