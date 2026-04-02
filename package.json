@@ -1,11 +1,11 @@
-{  "engines" : {
-  "node": "18.20.8"
-}
-,
+{  
+
 
   "name": "portfolio.com",
   "version": "0.1.0",
-  "private": true,
+"engines" : {
+  "node": "24.x"
+}  ,"private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
