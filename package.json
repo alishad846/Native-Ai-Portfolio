@@ -1,4 +1,8 @@
-{
+{  "engines" : {
+  "node": "18.20.8"
+}
+,
+
   "name": "portfolio.com",
   "version": "0.1.0",
   "private": true,
@@ -7,9 +11,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
-  },"engines": {
-  "node": "18.20.8"
-},
+  },
   "dependencies": {
     "@ai-sdk/mistral": "^1.2.7",
     "@ai-sdk/react": "^1.2.0",
