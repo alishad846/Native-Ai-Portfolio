@@ -10,13 +10,14 @@ import { toast } from 'sonner';
 import ChatBottombar from '@/components/chat/chat-bottombar';
 import ChatLanding from '@/components/chat/chat-landing';
 import ChatMessageContent from '@/components/chat/chat-message-content';
+import { profile } from '@/data/profile';
 import { SimplifiedChatView } from '@/components/chat/simple-chat-view';
 import {
   ChatBubble,
   ChatBubbleMessage,
 } from '@/components/ui/chat/chat-bubble';
 import WelcomeModal from '@/components/welcome-modal';
-import { Info } from 'lucide-react';
+import { Heart, Info } from 'lucide-react';
 import { GithubButton } from '../ui/github-button';
 import HelperBoost from './HelperBoost';
 
@@ -76,7 +77,7 @@ const Avatar = dynamic<AvatarProps>(
       // Conditional rendering based on detection
       return (
         <div
-          className={`flex items-center justify-center rounded-full transition-all duration-300 ${hasActiveTool ? 'h-20 w-20' : 'h-28 w-28'}`}
+          className={`flex items-center justify-center transition-all duration-300 ${hasActiveTool ? 'h-20 w-20' : 'h-28 w-28'}`}
         >
           <div
             className="relative cursor-pointer"
@@ -84,9 +85,9 @@ const Avatar = dynamic<AvatarProps>(
           >
             {isIOS() ? (
               <img
-                src="/landing-memojis.png"
+                src={profile.avatarImageUrl}
                 alt="iOS avatar"
-                className="h-full w-full scale-[1.8] object-contain"
+                className="h-full w-full scale-[1.8] object-cover"
               />
             ) : (
               <video
@@ -96,8 +97,8 @@ const Avatar = dynamic<AvatarProps>(
                 playsInline
                 loop
               >
-                <source src="/final_memojis.webm" type="video/webm" />
-                <source src="/final_memojis_ios.mp4" type="video/mp4" />
+                <source src={profile.avatarVideoWebm} type="video/webm" />
+                <source src={profile.avatarVideoMp4} type="video/mp4" />
               </video>
             )}
           </div>
@@ -113,7 +114,7 @@ const MOTION_CONFIG = {
   exit: { opacity: 0, y: 20 },
   transition: {
     duration: 0.3,
-    ease: 'easeOut',
+    ease: [0.25, 0.1, 0.25, 1] as const,
   },
 };
 
@@ -137,6 +138,7 @@ const Chat = () => {
     reload,
     addToolResult,
     append,
+    error,
   } = useChat({
     onResponse: (response) => {
       if (response) {
@@ -271,11 +273,8 @@ const Chat = () => {
   const isEmptyState =
     !currentAIMessage && !latestUserMessage && !loadingSubmit;
 
-  // Calculate header height based on hasActiveTool
-  const headerHeight = hasActiveTool ? 100 : 180;
-
   return (
-    <div className="relative h-screen overflow-hidden">
+    <div className="relative min-h-screen overflow-auto">
       <div className="absolute top-6 right-8 z-51 flex flex-col-reverse items-center justify-center gap-1 md:flex-row">
         <WelcomeModal
           trigger={
@@ -289,15 +288,13 @@ const Chat = () => {
             animationDuration={1.5}
             label="Star"
             size={'sm'}
-            repoUrl="https://github.com/yuvraj0412s"
+            repoUrl={profile.github}
           />
         </div>
       </div>
 
-      {/* Fixed Avatar Header with Gradient */}
-      <div
-        className="fixed top-0 right-0 left-0 z-50 bg-gradient-to-b from-white via-white/95 via-50% to-transparent dark:from-black dark:via-black/95 dark:via-50% dark:to-transparent"
-      >
+      {/* Avatar Header with Gradient */}
+      <div className="relative z-50 w-full bg-gradient-to-b from-white via-white/95 via-50% to-transparent dark:from-black dark:via-black/95 dark:via-50% dark:to-transparent">
         <div
           className={`transition-all duration-300 ease-in-out ${hasActiveTool ? 'pt-6 pb-0' : 'py-6'}`}
         >
@@ -336,10 +333,7 @@ const Chat = () => {
       {/* Main Content Area */}
       <div className="container mx-auto flex h-full max-w-3xl flex-col">
         {/* Scrollable Chat Content */}
-        <div
-          className="flex-1 overflow-y-auto px-2"
-          style={{ paddingTop: `${headerHeight}px` }}
-        >
+        <div className="flex-1 overflow-y-auto px-2 pb-40">
           <AnimatePresence mode="wait">
             {isEmptyState ? (
               <motion.div
@@ -358,47 +352,71 @@ const Chat = () => {
                   addToolResult={addToolResult}
                 />
               </div>
+            ) : loadingSubmit ? (
+              <motion.div
+                key="loading"
+                {...MOTION_CONFIG}
+                className="px-4 pt-18"
+              >
+                <ChatBubble variant="received">
+                  <ChatBubbleMessage isLoading />
+                </ChatBubble>
+              </motion.div>
             ) : (
-              loadingSubmit && (
-                <motion.div
-                  key="loading"
-                  {...MOTION_CONFIG}
-                  className="px-4 pt-18"
-                >
-                  <ChatBubble variant="received">
-                    <ChatBubbleMessage isLoading />
-                  </ChatBubble>
-                </motion.div>
-              )
+              <motion.div
+                key="fallback"
+                {...MOTION_CONFIG}
+                className="px-4 py-16"
+              >
+                <ChatBubble variant="received">
+                  <ChatBubbleMessage>
+                    <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                      {error
+                        ? error.message
+                        : 'No response came back. Try again or check your internet connection.'}
+                    </p>
+                    {!error && (
+                      <p className="text-xs text-muted-foreground mt-2">
+                        If this keeps happening, verify you have the proper chat
+                        provider credentials (MISTRAL_API_KEY) and restart the
+                        app.
+                      </p>
+                    )}
+                  </ChatBubbleMessage>
+                </ChatBubble>
+              </motion.div>
             )}
           </AnimatePresence>
         </div>
 
-{/* Fixed Bottom Bar */}
-<div
-  className="sticky bottom-0 px-2 pt-3 md:px-0 md:pb-4 transition-colors duration-300 bg-white dark:bg-black"
->
-  <div className="relative flex flex-col items-center gap-3">
-    <HelperBoost submitQuery={submitQuery} setInput={setInput} />
-    <ChatBottombar
-      input={input}
-      handleInputChange={handleInputChange}
-      handleSubmit={onSubmit}
-      isLoading={isLoading}
-      stop={handleStop}
-      isToolInProgress={isToolInProgress}
-    />
-  </div>
-</div>
-
         <a
-          href="https://linkedin.com/in/yuvraj-singh-77601827a"
+          href={profile.linkedin}
           target="_blank"
           rel="noopener noreferrer"
-          className="fixed right-3 bottom-0 z-10 mb-4 hidden cursor-pointer items-center gap-2 rounded-xl px-4 py-2 text-sm hover:underline md:block"
+          className="fixed right-3 bottom-24 z-10 mb-4 hidden cursor-pointer items-center gap-2 rounded-xl px-4 py-2 text-sm hover:underline md:block"
         >
-          @yuvraj-singh
+         
         </a>
+      </div>
+
+      {/* Fixed helper & input (overlay) */}
+      <div className="fixed inset-x-0 bottom-0 z-50 px-2 pb-3 md:pb-4">
+        <div className="mx-auto w-full max-w-3xl rounded-[30px] bg-white/80 px-4 py-3 shadow-2xl shadow-neutral-200 backdrop-blur-xl transition-colors duration-300 dark:bg-black/80 dark:shadow-black/40">
+          <div className="flex flex-col items-center gap-3">
+            <HelperBoost submitQuery={submitQuery} setInput={setInput} />
+            <ChatBottombar
+              input={input}
+              handleInputChange={handleInputChange}
+              handleSubmit={onSubmit}
+              isLoading={isLoading}
+              stop={handleStop}
+              isToolInProgress={isToolInProgress}
+            />
+            <div className="text-center text-[11px] font-medium leading-none text-black dark:text-white">
+              Made by Shad Ali <Heart className="inline-block h-3 w-3 text-red-500" aria-hidden />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

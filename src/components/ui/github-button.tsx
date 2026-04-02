@@ -76,7 +76,7 @@ function GithubButton({
   transition,
   ...props
 }: GithubButtonProps) {
-  const [targetStars, setTargetStars] = useState<number | null>(null);
+  const [targetStars] = useState<number | null>(initialStars);
   const [currentStars, setCurrentStars] = useState(initialStars);
   const [isAnimating, setIsAnimating] = useState(false);
   const [starProgress, setStarProgress] = useState(filled ? 100 : 0);
@@ -96,13 +96,6 @@ function GithubButton({
     }
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   };
-
-  // Fetch stars from GitHub API
-  useEffect(() => {
-    fetch('/api/github-stars')
-      .then((res) => res.json())
-      .then((data) => setTargetStars(data.stars));
-  }, []);
 
   const startAnimation = useCallback(() => {
     if (isAnimating || hasAnimated || targetStars === null) return;

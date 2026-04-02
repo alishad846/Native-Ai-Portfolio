@@ -25,7 +25,7 @@ import {
   UserRoundSearch,
   UserSearch,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Drawer } from 'vaul';
 
 interface HelperBoostProps {
@@ -143,29 +143,100 @@ const AnimatedChevron = () => {
   );
 };
 
+const COUNTDOWN_START = 3;
+const FUN_POINTS = [
+  'Build fun projects that mix creative thinking with new tech stacks.',
+  'Prototype AI-native experiences and launch fresh project ideas.',
+  'Learn new backend libraries and tackle UI challenges.',
+  'Swim, sing, and listen to music to relax between sprints.',
+];
+
 export default function HelperBoost({
   submitQuery,
   setInput,
 }: HelperBoostProps) {
   const [isVisible, setIsVisible] = useState(true);
   const [open, setOpen] = useState(false);
+  const [countdown, setCountdown] = useState(0);
+  const [countdownLabel, setCountdownLabel] = useState('');
+  const [funPreview, setFunPreview] = useState<string[]>([]);
+  const countdownTimer = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (countdownTimer.current) {
+        clearInterval(countdownTimer.current);
+      }
+    };
+  }, []);
+
+  const startCountdown = (
+    questionText: string,
+    onComplete: () => void
+  ) => {
+    if (countdown > 0) return;
+    setCountdownLabel(questionText);
+    setCountdown(COUNTDOWN_START);
+    if (!questionText.toLowerCase().includes('craziest')) {
+      setFunPreview([]);
+    }
+
+    if (countdownTimer.current) {
+      clearTimeout(countdownTimer.current);
+      countdownTimer.current = null;
+    }
+
+    const tick = (value: number) => {
+      if (value <= 0) {
+        if (countdownTimer.current) {
+          clearTimeout(countdownTimer.current);
+          countdownTimer.current = null;
+        }
+        setCountdown(0);
+        setCountdownLabel('');
+        onComplete();
+        return;
+      }
+
+      countdownTimer.current = window.setTimeout(() => {
+        setCountdown(value);
+        tick(value - 1);
+      }, 1000);
+    };
+
+    tick(COUNTDOWN_START - 1);
+  };
 
   const handleQuestionClick = (questionKey: string) => {
-    if (submitQuery) {
-      submitQuery(questions[questionKey as keyof typeof questions]);
-    }
+    const questionText = questions[questionKey as keyof typeof questions];
+    if (!submitQuery) return;
+    startCountdown(questionText, () => {
+      if (questionKey === 'Fun') {
+        setFunPreview(FUN_POINTS);
+      } else {
+        setFunPreview([]);
+      }
+      submitQuery(questionText);
+    });
   };
 
   const handleDrawerQuestionClick = (question: string) => {
-    if (submitQuery) {
+    if (!submitQuery) return;
+    startCountdown(question, () => {
+      if (question.toLowerCase().includes('craziest')) {
+        setFunPreview(FUN_POINTS);
+      }
       submitQuery(question);
-    }
-    setOpen(false);
+      setOpen(false);
+    });
   };
 
   const toggleVisibility = () => {
     setIsVisible(!isVisible);
   };
+
+  const countdownProgress =
+    countdown > 0 ? ((COUNTDOWN_START - countdown) / COUNTDOWN_START) * 100 : 0;
 
   return (
     <>
@@ -198,6 +269,36 @@ export default function HelperBoost({
           </div>
 
           {/* HelperBoost Content */}
+          {countdown > 0 && (
+            <div className="mb-4 rounded-2xl border border-dashed border-neutral-200 bg-white/80 px-4 py-3 text-center text-sm text-neutral-800 shadow-sm dark:border-neutral-700 dark:bg-neutral-900/70 dark:text-neutral-50">
+              <p className="font-semibold text-xs uppercase tracking-[0.4em] text-neutral-500 dark:text-neutral-300">
+                Loading...
+              </p>
+              <p className="text-base font-semibold">
+                Preparing answers ({countdown}s)
+              </p>
+              <div className="mt-2 h-1.5 w-full rounded-full bg-neutral-200 dark:bg-neutral-800">
+                <div
+                  className="h-full rounded-full bg-gradient-to-r from-blue-500 to-fuchsia-500 transition-all"
+                  style={{ width: `${countdownProgress}%` }}
+                />
+              </div>
+            </div>
+          )}
+          {funPreview.length > 0 && countdown === 0 && (
+            <div className="mb-4 rounded-2xl border border-neutral-200 bg-gradient-to-r from-purple-50 to-white px-4 py-3 text-sm text-neutral-900 shadow-sm dark:border-neutral-700 dark:bg-purple-900/70 dark:text-white">
+              <p className="text-xs uppercase tracking-[0.4em] text-neutral-500 dark:text-neutral-300">
+                Fun highlight
+              </p>
+              <ul className="mt-2 space-y-1 text-base list-inside text-neutral-900 dark:text-neutral-100 break-words">
+                {funPreview.map((point) => (
+                  <li key={point} className="text-left">
+                    {point}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
           {isVisible && (
             <div className="w-full">
               <div

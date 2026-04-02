@@ -3,24 +3,20 @@ import { z } from 'zod';
 
 export const getInternship = tool({
   description:
-    "Gives a summary of what kind of internship I'm looking for, plus my contact info and how to reach me. Use this tool when the user asks about my internship search or how to contact me for opportunities.",
+    "Gives a summary of the kind of internship I'm looking for, plus contact info and how to reach me.",
   parameters: z.object({}),
   execute: async () => {
-    return `Here’s what I’m looking for 👇
+    return `Here's what I'm looking for:
 
-- 📅 **Availability**: Open to immediate opportunities
-- 🌍 **Location**: Preferably **Gurugram** or anywhere in the **India**
-- 🧑‍💻 **Focus**: Data Science, AI/ML, Full-stack development
-- 🛠️ **Stack**: Python, React, SQL, TensorFlow, Power BI, Tableau
-- ✅ **What I bring**: Experience in building data-driven dashboards, optimizing data pipelines, and developing end-to-end analytics projects. Proven ability to translate raw data into actionable business insights.
-- 🔥 I move fast, learn faster, and I’m HUNGRYYYYY for big challenges
+- Availability: Open to internship opportunities
+- Location: Jaipur, Rajasthan, India, with flexibility for strong opportunities
+- Focus: Software engineering, AI/ML, NLP, backend systems, analytics, and LLM-enabled products
+- Stack: Python, SQL, REST APIs, Machine Learning, NLP, TensorFlow, scikit-learn, Streamlit, PostgreSQL, GitHub, Azure DevOps
+- What I bring: Hands-on experience across ML pipelines, backend-oriented problem solving, KPI reporting, workflow optimization, and building practical user-facing systems
 
-📬 **Contact me** via:
-- Email: yuvraj0412s@gmail.com
-- LinkedIn: [linkedin.com/in/yuvraj-singh-77601827a](- LinkedIn: https://linkedin.com/in/yuvraj-singh-77601827a)
-- GitHub: [github.com/yuvraj0412s](https://github.com/yuvraj0412s)
-
-Let's build cool shit together ✌️
-    `;
+Contact me via:
+- Email: alishad846@gmail.com
+- LinkedIn: https://www.linkedin.com/in/shad-ali-099a82145
+- GitHub: https://github.com/alishad846`;
   },
 });

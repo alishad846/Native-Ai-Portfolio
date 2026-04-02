@@ -1,7 +1,8 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { Award, Code, GraduationCap, Mail, MessageSquare } from 'lucide-react';
+import { profile } from '@/data/profile';
+import { motion, type Variants } from 'framer-motion';
+import { Award, Code, Mail, MessageSquare } from 'lucide-react';
 import React from 'react';
 
 interface ChatLandingProps {
@@ -9,46 +10,27 @@ interface ChatLandingProps {
 }
 
 const ChatLanding: React.FC<ChatLandingProps> = ({ submitQuery }) => {
-  // Suggested questions that the user can click on
   const suggestedQuestions = [
-    {
-      icon: <MessageSquare className="h-4 w-4" />,
-      text: 'Who are you?',
-    },
-    {
-      icon: <Code className="h-4 w-4" />,
-      text: 'What projects have you worked on?',
-    },
-    {
-      icon: <Award className="h-4 w-4" />,
-      text: 'What are your skills?',
-    },
-    {
-      icon: <Mail className="h-4 w-4" />,
-      text: 'How can I contact you?',
-    },
+    { icon: <MessageSquare className="h-4 w-4" />, text: 'Who are you?' },
+    { icon: <Code className="h-4 w-4" />, text: 'What projects have you worked on?' },
+    { icon: <Award className="h-4 w-4" />, text: 'What are your skills?' },
+    { icon: <Mail className="h-4 w-4" />, text: 'How can I contact you?' },
   ];
 
-  // Animation variants for staggered animation
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
+      transition: { staggerChildren: 0.1 },
     },
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
-        duration: 0.4,
-        ease: [0.25, 0.1, 0.25, 1],
-      },
+      transition: { duration: 0.4, ease: 'easeOut' },
     },
   };
 
@@ -59,24 +41,20 @@ const ChatLanding: React.FC<ChatLandingProps> = ({ submitQuery }) => {
       animate="visible"
       variants={containerVariants}
     >
-      {/* Welcome message */}
       <motion.div className="mb-8 text-center" variants={itemVariants}>
         <h2 className="mb-3 text-2xl font-semibold">
-          I'm Yuvraj's digital twin
+          I&apos;m {profile.firstName}&apos;s digital twin
         </h2>
         <p className="text-muted-foreground mx-auto max-w-md">
-          The first portfolio that fit YOU needs.
+          Ask about my projects, skills, resume, or how I build AI-enabled
+          software products.
         </p>
       </motion.div>
 
-      {/* Suggested questions */}
-      <motion.div
-        className="w-full max-w-md space-y-3"
-        variants={containerVariants}
-      >
-        {suggestedQuestions.map((question, index) => (
+      <motion.div className="w-full max-w-md space-y-3" variants={containerVariants}>
+        {suggestedQuestions.map((question) => (
           <motion.button
-            key={index}
+            key={question.text}
             className="bg-accent hover:bg-accent/80 flex w-full items-center rounded-lg px-4 py-3 transition-colors"
             onClick={() => submitQuery(question.text)}
             variants={itemVariants}

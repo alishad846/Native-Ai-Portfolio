@@ -1,10 +1,12 @@
 'use client';
 
 import FluidCursor from '@/components/FluidCursor';
+import WelcomeModal from '@/components/welcome-modal';
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { Button } from '@/components/ui/button';
 import { GithubButton } from '@/components/ui/github-button';
-import WelcomeModal from '@/components/welcome-modal';
-import { motion } from 'framer-motion';
+import { profile } from '@/data/profile';
+import { motion, type Variants } from 'framer-motion';
 import {
   ArrowRight,
   BriefcaseBusiness,
@@ -16,14 +18,12 @@ import {
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { ThemeToggle } from '@/components/ui/ThemeToggle'; // Import the theme toggle
 
-/* ---------- quick-question data ---------- */
 const questions = {
   Me: 'Who are you? I want to know more about you.',
   Projects: 'What are your projects? What are you working on right now?',
   Skills: 'What are your skills? Give me a list of your soft and hard skills.',
-  Fun: 'What’s the craziest thing you’ve ever done? What are your hobbies?',
+  Fun: "What's the craziest thing you've ever done? What are your hobbies?",
   Contact: 'How can I contact you?',
 } as const;
 
@@ -35,7 +35,6 @@ const questionConfig = [
   { key: 'Contact', color: '#C19433', icon: UserRoundSearch },
 ] as const;
 
-/* ---------- component ---------- */
 export default function Home() {
   const [input, setInput] = useState('');
   const router = useRouter();
@@ -44,64 +43,63 @@ export default function Home() {
   const goToChat = (query: string) =>
     router.push(`/chat?query=${encodeURIComponent(query)}`);
 
-  /* hero animations (unchanged) */
-  const topElementVariants = {
+  const topElementVariants: Variants = {
     hidden: { opacity: 0, y: -60 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { type: 'ease', duration: 0.8 },
+      transition: { ease: [0.25, 0.1, 0.25, 1] as const, duration: 0.8 },
     },
   };
-  const bottomElementVariants = {
+
+  const bottomElementVariants: Variants = {
     hidden: { opacity: 0, y: 80 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { type: 'ease', duration: 0.8, delay: 0.2 },
+      transition: {
+        ease: [0.25, 0.1, 0.25, 1] as const,
+        duration: 0.8,
+        delay: 0.2,
+      },
     },
   };
 
   useEffect(() => {
-    // Précharger les assets du chat en arrière-plan
     const img = new window.Image();
-    img.src = '/landing-memojis.png';
+    img.src = profile.heroPhotoUrl;
 
-    // Précharger les vidéos aussi
     const linkWebm = document.createElement('link');
-    linkWebm.rel = 'preload'; // Note: prefetch au lieu de preload
+    linkWebm.rel = 'preload';
     linkWebm.as = 'video';
-    linkWebm.href = '/final_memojis.webm';
+    linkWebm.href = profile.avatarVideoWebm;
     document.head.appendChild(linkWebm);
 
     const linkMp4 = document.createElement('link');
     linkMp4.rel = 'prefetch';
     linkMp4.as = 'video';
-    linkMp4.href = '/final_memojis_ios.mp4';
+    linkMp4.href = profile.avatarVideoMp4;
     document.head.appendChild(linkMp4);
   }, []);
 
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-4 pb-10 md:pb-20">
-      {/* big blurred footer word */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center overflow-hidden">
         <div
           className="hidden bg-gradient-to-b from-neutral-500/10 to-neutral-500/0 bg-clip-text text-[10rem] leading-none font-black text-transparent select-none sm:block lg:text-[16rem]"
           style={{ marginBottom: '-2.5rem' }}
         >
-          Yuvraj
+          {profile.firstName}
         </div>
       </div>
 
-      {/* GitHub button */}
       <div className="absolute top-6 right-8 z-20 flex items-center gap-2">
         <ThemeToggle />
         <GithubButton
-          //targetStars={69}
           animationDuration={1.5}
           label="Star"
           size={'sm'}
-          repoUrl="https://github.com/yuvraj0412s/ai-native_portfolio.git"
+          repoUrl={profile.repo}
         />
       </div>
 
@@ -110,7 +108,6 @@ export default function Home() {
           onClick={() => goToChat('Are you looking for an internship?')}
           className="relative flex cursor-pointer items-center gap-2 rounded-full border bg-white/30 px-4 py-1.5 text-sm font-medium text-black shadow-md backdrop-blur-lg transition hover:bg-white/60 dark:border-white dark:text-white dark:hover:bg-neutral-800"
         >
-          {/* Green pulse dot */}
           <span className="relative flex h-2 w-2">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
             <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500"></span>
@@ -119,7 +116,6 @@ export default function Home() {
         </button>
       </div>
 
-      {/* header */}
       <motion.div
         className="z-1 mt-24 mb-8 flex flex-col items-center text-center md:mt-4 md:mb-12"
         variants={topElementVariants}
@@ -131,33 +127,30 @@ export default function Home() {
         </div>
 
         <h2 className="text-secondary-foreground mt-1 text-xl font-semibold md:text-2xl">
-          Hey, I'm Yuvraj Singh 👋
+          Hey, I&apos;m {profile.fullName} 👋
         </h2>
         <h1 className="text-4xl font-bold sm:text-5xl md:text-6xl lg:text-7xl">
-          AI Portfolio
+          {profile.headline}
         </h1>
       </motion.div>
 
-      {/* centre memoji */}
-      <div className="relative z-10 h-52 w-48 overflow-hidden sm:h-72 sm:w-72">
+      <div className="relative z-10 h-56 w-48 overflow-hidden sm:h-80 sm:w-72">
         <Image
-          src="/landing-memojis.png"
-          alt="Hero memoji"
-          width={2000}
-          height={2000}
+          src={profile.heroPhotoUrl}
+          alt={profile.heroPhotoAlt}
+          width={1200}
+          height={1500}
           priority
-          className="translate-y-1 scale-[1.2] object-cover"
+          className="h-full w-full object-cover"
         />
       </div>
 
-      {/* input + quick buttons */}
       <motion.div
         variants={bottomElementVariants}
         initial="hidden"
         animate="visible"
         className="z-10 mt-4 flex w-full flex-col items-center justify-center md:px-0"
       >
-        {/* free-form question */}
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -171,7 +164,7 @@ export default function Home() {
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask me anything…"
+              placeholder="Ask me anything..."
               className="w-full border-none bg-transparent text-base text-neutral-800 placeholder:text-neutral-500 focus:outline-none dark:text-neutral-200 dark:placeholder:text-neutral-500"
             />
             <button
@@ -180,12 +173,11 @@ export default function Home() {
               aria-label="Submit question"
               className="flex items-center justify-center rounded-full bg-[#0171E3] p-2.5 text-white transition-colors hover:bg-blue-600 disabled:opacity-70 dark:bg-blue-600 dark:hover:bg-blue-700"
             >
-              <ArrowRight  className="h-5 w-5" />
+              <ArrowRight className="h-5 w-5" />
             </button>
           </div>
         </form>
 
-        {/* quick-question grid */}
         <div className="mt-4 grid w-full max-w-2xl grid-cols-1 gap-3 sm:grid-cols-3 md:grid-cols-5">
           {questionConfig.map(({ key, color, icon: Icon }) => (
             <Button

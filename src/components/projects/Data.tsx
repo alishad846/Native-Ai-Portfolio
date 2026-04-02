@@ -1,258 +1,196 @@
-// File: data.tsx
-
 import Image from 'next/image';
-import { ChevronRight, Link } from 'lucide-react';
+import { ChevronRight, Link, PlayCircle } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
+import { projectsData } from '@/data/profile';
 
-// --- PROJECT DATABASE ---
-// This array holds the detailed information for each project.
-const PROJECT_CONTENT = [
-    {
-    // --- NEW AI-NATIVE PORTFOLIO PROJECT ---
-    title: 'AI-Native Portfolio',
-    description:
-      'Static portfolios are boring. Mine talks back. The world’s first AI-native portfolio where an AI avatar answers your questions about me in real time.',
-    techStack: [
-      'Next.js',
-      'React',
-      'TypeScript',
-      'Tailwind CSS',
-      'Framer Motion',
-      'Mistral AI API',
-      'OpenAI API',
-      'Node.js',
-      'Vercel',
-    ],
-    date: 'August 2025', // <-- TODO: Update with your project date
-    links: [
-      {
-        name: 'Live Demo - You Are Here!',
-        url: 'https://www.yuvraj.bio',
-      },
-      {
-        name: 'GitHub Repository',
-        url: 'https://github.com/yuvraj0412s/ai-native-portfolio',
-      },
-    ],
-    images: [
-      { src: '/projects/ai-portfolio-chat.png', alt: 'The AI Native Portfolio chat interface in action' },
-      { src: '/projects/ai-portfolio-home.png', alt: 'Homepage of the AI Native Portfolio' },
-    ],
-  },
+type ProjectMedia =
+  | {
+      type: 'image';
+      src: string;
+      alt: string;
+    }
+  | {
+      type: 'video';
+      src: string;
+      poster?: string;
+      title: string;
+    };
+
+type ProjectDetails = {
+  title: string;
+  previewSrc: string;
+  overview: string;
+  highlights: string[];
+  links: { name: string; url: string }[];
+  media: ProjectMedia[];
+};
+
+const PROJECT_DETAILS: ProjectDetails[] = [
   {
-    title: 'AgroAI',
-    description:
-      'Snap a leaf, get a diagnosis! This AI-powered web app detects 38 plant diseases with 96% accuracy and gives instant tips on symptoms, causes, and treatment—making plant care smarter and easier for farmers and gardeners.',
-    techStack: [
-      'Python',
-      'Flask',
-      'TensorFlow',
-      'Keras',
-      'Deep Learning',
-      'Computer Vision',
-      'EfficientNetB4',
-      'HTML5',
-      'CSS3',
-      'JavaScript',
+    title: 'DataInsights.ai',
+    previewSrc: '/projects/datainsights-preview.png',
+    overview:
+      'An LLM-driven analytics workspace designed to help non-technical users ask business questions in plain language and get structured, actionable insights back.',
+    highlights: [
+      'Translated natural-language prompts into data-focused workflows and usable outputs.',
+      'Focused on practical insight delivery instead of raw model output alone.',
+      'Built for decision support, reporting clarity, and analyst productivity.',
     ],
-    date: 'May 2024',
     links: [
-      {
-        name: 'Live Demo',
-        url: 'https://github.com/yuvraj0412s/AgroAI', // <-- TODO: Replace with your live deployment URL.... will do later
-      },
-      {
-        name: 'GitHub Repository',
-        url: 'https://github.com/yuvraj0412s/AgroAI', // <-- TODO: Replace with your actual repo URL if different
-      },
+      { name: 'GitHub Repository', url: 'https://github.com/alishad846/DataInsights.ai' },
     ],
-    // All seven of screenshots are showcased here
-    images: [
+    media: [
       {
-        src: '/projects/agroai-home.png',
-        alt: 'AgroAI Homepage - AI-Powered Plant Health Companion',
-      },
-      {
-        src: '/projects/agroai-result.png',
-        alt: 'AgroAI Analysis Result Page with Prediction and Confidence Score',
-      },
-      {
-        src: '/projects/agroai-guide.png',
-        alt: 'AgroAI Crop-wise Disease Guides Page',
-      },
-      {
-        src: '/projects/agroai-guide-detail.png',
-        alt: 'AgroAI Tomato Disease Guide Detail Page with Accordion',
-      },
-      {
-        src: '/projects/agroai-how-it-works.png',
-        alt: 'AgroAI How It Works Page with a 3-step flowchart',
-      },
-      {
-        src: '/projects/agroai-resources.png',
-        alt: 'AgroAI Farming & Plant Care Resources Page',
-      },
-      {
-        src: '/projects/agroai-about.png',
-        alt: 'AgroAI About and Contact Page',
+        type: 'video',
+        src: '/projects/videos/datainsights-ai.mp4',
+        poster: '/projects/datainsights-preview.png',
+        title: 'DataInsights.ai walkthrough',
       },
     ],
   },
   {
-    // --- NEW DJANGO E-COMMERCE PROJECT ---
-    title: 'Holohype',
-    description:
-      'HoloHype is a quirky full-stack e-commerce hub with a clever AI that knows what you want, a lightning-fast cart, secure logins, and a super-handy admin panel to keep all the goodies in check.',
-    techStack: [
-      'Django',
-      'Python',
-      'Cython',
-      'Content-Based Filtering',
-      'NumPy',
-      'Pandas',
-      'JavaScript',
-      'AJAX',
-      'HTML5',
-      'CSS3',
+    title: 'Resume Data Extraction',
+    previewSrc: '/projects/resume-extraction-preview.png',
+    overview:
+      'A resume parsing workflow that extracts structured candidate information using NLP so recruiters and teams can review profiles faster and more consistently.',
+    highlights: [
+      'Automated extraction of key candidate fields from unstructured resumes.',
+      'Reduced manual screening effort by converting documents into structured data.',
+      'Built around NLP techniques that are useful in real hiring workflows.',
     ],
-    date: 'June 2025', // <-- TODO: Update with your project date
     links: [
       {
-        name: 'Live Demo',
-        url: 'https://github.com/yuvraj0412s/holohype', // <-- TODO: Replace with your live deployment URL
-      },
-      {
         name: 'GitHub Repository',
-        url: 'https://github.com/yuvraj0412s/holohype', // <-- TODO: Update with your actual repo URL
+        url: 'https://github.com/alishad846/Resume-Data-Extraction',
       },
     ],
-    images: [
-      { src: '/projects/holohype-home.png', alt: 'E-commerce platform homepage with product listings' },
-      { src: '/projects/holohype-login.png', alt: 'Modern user login and authentication page' },
-      { src: '/projects/holohype-product.png', alt: 'Product detail page with AI-powered recommendations' },
-      { src: '/projects/holohype-cart.png', alt: 'Dynamic shopping cart with real-time updates' },
+    media: [
+      {
+        type: 'video',
+        src: '/projects/videos/resume-data-extraction.mp4',
+        poster: '/projects/resume-extraction-preview.png',
+        title: 'Resume Data Extraction walkthrough',
+      },
     ],
   },
   {
-    // --- NEW REACT PORTFOLIO PROJECT ---
-    title: 'Old Portfolio',
-    description:
-      'A stellar dev portfolio with shooting stars on a dark space background! Built with React, Vite & Tailwind, it features sleek animations, dark/light mode, a filterable skills grid, dynamic project showcase, and a working contact form. A cosmic way to show off my frontend skills!',
-    techStack: [
-      'React',
-      'Vite',
-      'Tailwind CSS',
-      'Radix UI',
-      'Lucide Icons',
-      'TypeScript',
-      'Responsive Design',
+    title: 'Customer Churn Prediction',
+    previewSrc: '/projects/customer-churn-preview.png',
+    overview:
+      'An end-to-end churn modeling project built around preprocessing, feature engineering, model validation, and business interpretation for retention-focused decisions.',
+    highlights: [
+      'Covered the full ML workflow from preparation to evaluation.',
+      'Focused on business-facing analysis rather than model accuracy in isolation.',
+      'Structured outputs around retention use cases and customer risk patterns.',
     ],
-    date: '2024', // <-- TODO: Update with your project date
     links: [
       {
-        name: 'Live Demo',
-        url: 'https://yuvraj-portfolio-phi.vercel.app', // <-- TODO: Update if this is the correct link
-      },
-      {
         name: 'GitHub Repository',
-        url: 'https://github.com/yuvraj0412s/react-tailwind-portfolio', // <-- TODO: Update with your actual repo URL
+        url: 'https://github.com/alishad846/Advanced_telco_churn',
       },
     ],
-    images: [
-      { src: '/projects/old-portfolio-home.png', alt: 'Homepage of the React portfolio with hero section' },
-      { src: '/projects/old-portfolio-about.png', alt: 'About Me section with description' },
-      { src: '/projects/old-portfolio-skills.png', alt: 'Filterable skills grid with progress bars' },
-      { src: '/projects/old-portfolio-projects.png', alt: 'Project showcase section with cards' },
-      { src: '/projects/old-portfolio-contact.png', alt: 'Contact page with form to reach out directly' },
+    media: [
+      {
+        type: 'video',
+        src: '/projects/videos/customer-churn.mp4',
+        poster: '/projects/customer-churn-preview.png',
+        title: 'Customer Churn Prediction walkthrough',
+      },
     ],
   },
   {
-    // --- YOUTUBE CLONE PROJECT (FROM YOUR README) ---
-    title: 'YouTube Clone',
-    description:
-      'A pixel-perfect, responsive clone of the YouTube user interface, built from scratch using modern HTML5 and CSS3. The project showcases a deep understanding of frontend fundamentals, featuring a dynamic video grid built with CSS Grid, a fully responsive sidebar and header created with Flexbox, and a mobile-first design approach that ensures a seamless experience on any device.',
-    techStack: [
-      'HTML5',
-      'CSS3',
-      'Flexbox',
-      'CSS Grid',
-      'Responsive Design',
-      'Mobile-First',
+    title: 'Deep Youtube Analysis',
+    previewSrc: '/projects/youtube-data-insight.png',
+    overview:
+      'A YouTube analytics dashboard that combines API-based metrics, sentiment-aware analysis, and recommendation-oriented insights for channel evaluation.',
+    highlights: [
+      'Connected data retrieval and insight generation in a single dashboard flow.',
+      'Added sentiment-aware analysis to go beyond surface-level engagement numbers.',
+      'Helped turn creator data into clearer content and growth decisions.',
     ],
-    date: '2023', // <-- TODO: Update with your project date
     links: [
       {
-        name: 'Live Demo',
-        url: 'https://github.com/yuvraj0412s/YouTube_clone', // <-- TODO: Replace with your live deployment URL
-      },
-      {
         name: 'GitHub Repository',
-        url: 'https://github.com/yuvraj0412s/YouTube_clone', // <-- TODO: Update if your repo name is different
+        url: 'https://github.com/alishad846/Deep_Youtube_Analysis',
       },
     ],
-    images: [
-      { src: '/projects/yt-clone-home.png', alt: 'Screenshot of the YouTube Clone project homepage' },
-      // Add more screenshots here if you have them!
-    ],
-  },
-  {
-    title: 'Latency-Aware Task Partitioning',
-    description:
-      'Proposed a framework for optimal task partitioning and user association across edge–fog–cloud layers, implementing metaheuristic algorithms (ACO, GA, PSO) to solve MILP-based formulations for both dependent and independent subtasks.',
-    techStack: [
-      'Python',
-      'Metaheuristic Algorithms (ACO, GA, PSO)',
-      'MILP',
-      'Edge Computing',
-    ],
-    date: 'Ongoing',
-    links: [],
-    images: [
+    media: [
       {
-        src: '/projects/RP_preview.png', // Placeholder image
-        alt: 'Latency-Aware Task Partitioning project image 1',
+        type: 'video',
+        src: '/projects/videos/deep-youtube-analysis.mp4',
+        poster: '/projects/youtube-data-insight.png',
+        title: 'Deep Youtube Analysis walkthrough',
       },
     ],
   },
 ];
 
-// --- COMPONENT & INTERFACE DEFINITIONS ---
-// Define interface for project prop
-interface ProjectProps {
+type ProjectCardData = {
+  category: string;
   title: string;
+  description: string;
+  techStack: string[];
+  date: string;
+};
+
+interface ProjectProps {
+  project: ProjectCardData;
 }
 
-// This component dynamically renders the project details
-const ProjectContent = ({ project }: { project: ProjectProps }) => {
-  // Find the matching project data from the database
-  const projectData = PROJECT_CONTENT.find((p) => p.title === project.title);
-
-  if (!projectData) {
-    return <div>Project details not available</div>;
-  }
+const ProjectContent = ({ project }: ProjectProps) => {
+  const projectDetails =
+    PROJECT_DETAILS.find((item) => item.title === project.title) ?? {
+      title: project.title,
+      previewSrc: '/projects/shad-placeholder.webp',
+      overview: project.description,
+      highlights: [],
+      links: projectLinks(project.title),
+      media: [],
+    };
 
   return (
     <div className="space-y-10">
-      {/* Header section with description */}
       <div className="rounded-3xl bg-[#F5F5F7] p-8 dark:bg-[#1D1D1F]">
         <div className="space-y-6">
           <div className="flex items-center gap-2 text-sm text-neutral-500 dark:text-neutral-400">
-            <span>{projectData.date}</span>
+            <span>{project.date}</span>
           </div>
 
-          <p className="text-secondary-foreground font-sans text-base leading-relaxed md:text-lg">
-            {projectData.description}
-          </p>
+          <div className="space-y-3">
+            <p className="text-secondary-foreground font-sans text-base leading-relaxed md:text-lg">
+              {project.description}
+            </p>
+            <p className="text-sm leading-7 text-neutral-600 dark:text-neutral-300 md:text-base">
+              {projectDetails.overview}
+            </p>
+          </div>
 
-          {/* Tech stack */}
-          <div className="pt-4">
-            <h3 className="mb-3 text-sm tracking-wide text-neutral-500 uppercase dark:text-neutral-400">
+          {projectDetails.highlights.length > 0 && (
+            <div className="pt-2">
+              <h3 className="mb-3 text-sm uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
+                Highlights
+              </h3>
+              <div className="grid gap-3 md:grid-cols-3">
+                {projectDetails.highlights.map((item) => (
+                  <div
+                    key={item}
+                    className="rounded-2xl border border-black/5 bg-white px-4 py-4 text-sm leading-6 text-neutral-700 shadow-sm dark:border-white/10 dark:bg-neutral-900/60 dark:text-neutral-200"
+                  >
+                    {item}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="pt-2">
+            <h3 className="mb-3 text-sm uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
               Technologies
             </h3>
             <div className="flex flex-wrap gap-2">
-              {projectData.techStack.map((tech, index) => (
+              {project.techStack.map((tech) => (
                 <span
-                  key={index}
+                  key={tech}
                   className="rounded-full bg-neutral-200 px-3 py-1 text-sm text-neutral-800 dark:bg-neutral-800 dark:text-neutral-200"
                 >
                   {tech}
@@ -263,10 +201,9 @@ const ProjectContent = ({ project }: { project: ProjectProps }) => {
         </div>
       </div>
 
-      {/* Links section */}
-      {projectData.links && projectData.links.length > 0 && (
-        <div className="mb-24">
-          <div className="px-6 mb-4 flex items-center gap-2">
+      {projectDetails.links.length > 0 && (
+        <div className="mb-2">
+          <div className="mb-4 flex items-center gap-2 px-2">
             <h3 className="text-sm tracking-wide text-neutral-500 dark:text-neutral-400">
               Links
             </h3>
@@ -274,13 +211,13 @@ const ProjectContent = ({ project }: { project: ProjectProps }) => {
           </div>
           <Separator className="my-4" />
           <div className="space-y-3">
-            {projectData.links.map((link, index) => (
+            {projectDetails.links.map((link) => (
               <a
-                key={index}
+                key={link.url}
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group bg-[#F5F5F7] flex items-center justify-between rounded-xl p-4 transition-colors hover:bg-[#E5E5E7] dark:bg-neutral-800 dark:hover:bg-neutral-700"
+                className="group flex items-center justify-between rounded-xl bg-[#F5F5F7] p-4 transition-colors hover:bg-[#E5E5E7] dark:bg-neutral-800 dark:hover:bg-neutral-700"
               >
                 <span className="font-light capitalize">{link.name}</span>
                 <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -290,23 +227,47 @@ const ProjectContent = ({ project }: { project: ProjectProps }) => {
         </div>
       )}
 
-      {/* Images gallery */}
-      {projectData.images && projectData.images.length > 0 && (
-        <div className="space-y-6">
-          <div className="grid grid-cols-1 gap-4">
-            {projectData.images.map((image, index) => (
-              <div
-                key={index}
-                className="relative aspect-video overflow-hidden rounded-2xl"
-              >
-                <Image
-                  src={image.src}
-                  alt={image.alt}
-                  fill
-                  className="object-cover transition-transform"
-                />
-              </div>
-            ))}
+      {projectDetails.media.length > 0 && (
+        <div className="space-y-4">
+          <div className="mb-2 flex items-center gap-2 px-2">
+            <h3 className="text-sm tracking-wide text-neutral-500 dark:text-neutral-400">
+              Preview
+            </h3>
+            <PlayCircle className="text-muted-foreground h-4 w-4" />
+          </div>
+          <div className="grid gap-4">
+            {projectDetails.media.map((item) =>
+              item.type === 'image' ? (
+                <div
+                  key={item.src}
+                  className="relative aspect-video overflow-hidden rounded-2xl bg-neutral-100 dark:bg-neutral-900"
+                >
+                  <Image
+                    src={item.src}
+                    alt={item.alt}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              ) : (
+                <div
+                  key={item.src}
+                  className="overflow-hidden rounded-2xl bg-neutral-950 ring-1 ring-black/5 dark:ring-white/10"
+                >
+                  <video
+                    className="aspect-video w-full object-cover"
+                    controls
+                    preload="metadata"
+                    poster={item.poster}
+                  >
+                    <source src={item.src} type="video/mp4" />
+                  </video>
+                  <div className="border-t border-white/10 px-4 py-3 text-sm text-neutral-200">
+                    {item.title}
+                  </div>
+                </div>
+              )
+            )}
           </div>
         </div>
       )}
@@ -314,56 +275,16 @@ const ProjectContent = ({ project }: { project: ProjectProps }) => {
   );
 };
 
-// --- MAIN DATA EXPORT ---
-// This is the data used by your main portfolio page.
-export const data = [
-   {
-    category: 'AI & Next.js',
-    title: 'AI-Native Portfolio',
-    src: '/projects/ai-portfolio-preview.png', // <-- TODO: Make sure you have a preview image at this path
-    content: (
-      // The `title` here MUST match the full title in PROJECT_CONTENT
-      <ProjectContent project={{ title: 'AI-Native Portfolio' }} />
-    ),
-  },
-  {
-    category: 'Full-Stack AI',
-    title: 'AgroAI',
-    src: '/projects/agroai-preview.png', // Use the main homepage screenshot for the preview
-    content: (
-      <ProjectContent project={{ title: 'AgroAI' }} />
-    ),
-  },
-  {
-    category: 'Full-Stack & AI',
-    title: 'Holohype',
-    src: '/projects/holohype-preview.png', // <-- TODO: Make sure you have a preview image at this path
-    content: (
-      <ProjectContent project={{ title: 'Holohype' }} />
-    ),
-  },
-  {
-    category: 'Frontend Development',
-    title: 'Old Portfolio',
-    src: '/projects/old-portfolio-preview.png', // <-- TODO: Make sure you have a preview image at this path
-    content: (
-      <ProjectContent project={{ title: 'Old Portfolio' }} />
-    ),
-  },
-  {
-    category: 'Frontend Development',
-    title: 'YouTube Clone',
-    src: '/projects/yt-clone-preview.png', // <-- TODO: Make sure you have a preview image at this path
-    content: (
-      <ProjectContent project={{ title: 'YouTube Clone' }} />
-    ),
-  },
-  {
-    category: 'Edge Computing',
-    title: 'Latency-Aware Task Partitioning',
-    src: '/projects/RP_preview.png', // Placeholder image
-    content: (
-      <ProjectContent project={{ title: 'Latency-Aware Task Partitioning' }} />
-    ),
-  },
-];
+const projectLinks = (title: string) =>
+  projectsData.find((project) => project.title === title)?.links ?? [];
+
+export const data = projectsData.map((project) => {
+  const details = PROJECT_DETAILS.find((item) => item.title === project.title);
+
+  return {
+    category: project.category,
+    title: project.title,
+    src: details?.previewSrc ?? '/projects/shad-placeholder.webp',
+    content: <ProjectContent project={project} />,
+  };
+});

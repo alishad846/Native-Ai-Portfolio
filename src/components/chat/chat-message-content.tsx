@@ -17,7 +17,6 @@ export type ChatMessageContentProps = {
   isLoading?: boolean;
   reload?: () => Promise<string | null | undefined>;
   addToolResult?: (args: { toolCallId: string; result: string }) => void;
-  skipToolRendering?: boolean;
 };
 
 const CodeBlock = ({ content }: { content: string }) => {

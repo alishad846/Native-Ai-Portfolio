@@ -25,7 +25,7 @@ const MOTION_CONFIG = {
   exit: { opacity: 0, y: 20 },
   transition: {
     duration: 0.3,
-    ease: 'easeOut',
+    ease: [0.25, 0.1, 0.25, 1] as const,
   },
 };
 
@@ -40,11 +40,11 @@ export function SimplifiedChatView({
   // Extract tool invocations that are in "result" state
   const toolInvocations =
     message.parts
-      ?.filter(
-        (part) =>
-          part.type === 'tool-invocation' &&
-          part.toolInvocation?.state === 'result'
-      )
+      ?.filter((part) => {
+        if (part.type !== 'tool-invocation') return false;
+        const state = part.toolInvocation?.state;
+        return state && state !== 'in_progress' && state !== 'running';
+      })
       .map((part) =>
         part.type === 'tool-invocation' ? part.toolInvocation : null
       )
@@ -83,7 +83,6 @@ export function SimplifiedChatView({
                   isLoading={isLoading}
                   reload={reload}
                   addToolResult={addToolResult}
-                  skipToolRendering={true}
                 />
               </ChatBubbleMessage>
             </ChatBubble>

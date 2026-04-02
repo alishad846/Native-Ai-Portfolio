@@ -1,13 +1,10 @@
-
-import { tool } from "ai";
-import { z } from "zod";
-
+import { tool } from 'ai';
+import { z } from 'zod';
 
 export const getProjects = tool({
-  description:
-    "This tool will show a list of all projects made by Yuvraj Singh",
+  description: 'This tool shows a list of projects built by Shad Ali.',
   parameters: z.object({}),
   execute: async () => {
-    return "Here are all my projects! Don't hesitate to ask me more about them!";
+    return 'Here are my featured AI, analytics, and software engineering projects.';
   },
 });

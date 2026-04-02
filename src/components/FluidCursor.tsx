@@ -1,11 +1,25 @@
 'use client';
 import { useEffect } from 'react';
 
-import fluidCursor from '@/hooks/use-FluidCursor';
-
 const FluidCursor = () => {
   useEffect(() => {
-    fluidCursor();
+    // Load fluid cursor after component mounts
+    const timer = setTimeout(() => {
+      try {
+        // Dynamic import to avoid SSR issues
+        import('@/hooks/use-FluidCursor').then(({ default: useFluidCursor }) => {
+          if (typeof useFluidCursor === 'function') {
+            useFluidCursor();
+          }
+        }).catch(err => {
+          console.error('Failed to load fluid cursor:', err);
+        });
+      } catch (err) {
+        console.error('FluidCursor initialization failed:', err);
+      }
+    }, 100); // Small delay to ensure DOM is ready
+
+    return () => clearTimeout(timer);
   }, []);
 
   return (
@@ -14,4 +28,5 @@ const FluidCursor = () => {
     </div>
   );
 };
+
 export default FluidCursor;

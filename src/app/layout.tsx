@@ -1,63 +1,25 @@
-import { Analytics } from "@vercel/analytics/react"
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import { cn } from "@/lib/utils";
-import { ThemeProvider } from "@/components/theme-provider";
-import { Toaster } from "@/components/ui/sonner";
-import Script from "next/script";
-import "./globals.css";
+import { Analytics } from '@vercel/analytics/react';
+import { ThemeProvider } from '@/components/theme-provider';
+import { Toaster } from '@/components/ui/sonner';
+import { cn } from '@/lib/utils';
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import Script from 'next/script';
+import './globals.css';
 
-// Load Inter font for non-Apple devices
-const inter = Inter({ 
-  subsets: ["latin"],
-  variable: "--font-inter",
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
 });
 
 export const metadata: Metadata = {
-  title: "Yuvraj Singh Portfolio",
-  description: "Interactive portfolio with an AI-powered Memoji that answers questions about me, my skills, and my experience",
-  keywords: [
-    "Yuvraj Singh", 
-    "Portfolio", 
-    "Developer", 
-    "AI", 
-    "Interactive", 
-    "Memoji", 
-    "Web Development",
-    "Full Stack",
-    "Next.js",
-    "React"
-  ],
-  authors: [
-    {
-      name: "Yuvraj Singh",
-      url: "https://yuvraj.bio",
-    },
-  ],
-  creator: "Yuvraj Singh",
-  openGraph: {
-    type: "website",
-    locale: "en_US",
-    url: "https://yuvraj.bio",
-    title: "Yuvraj Singh Portfolio",
-    description: "Interactive portfolio with an AI-powered Memoji that answers questions about me",
-    siteName: "Yuvraj Singh Portfolio",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Yuvraj Singh Portfolio",
-    description: "Interactive portfolio with an AI-powered Memoji that answers questions about me",
-    creator: "@yuvrajsingh",
-  },
+  title: 'Shad Ali Portfolio',
+  description:
+    'Interactive portfolio with AI-native storytelling around software engineering, AI/ML, NLP, analytics, and backend product development.',
   icons: {
-    icon: [
-      {
-        url: "/logo-yuvi.svg",
-        sizes: "any",
-      }
-    ],
-    shortcut: "/logo-yuvi.svg?v=2",
-    apple: "/apple-touch-icon.svg?v=2",
+    icon: '/landing-memojisss.png',
+    shortcut: '/landing-memojisss.png',
+    apple: '/apple-touch-icon.svg?v=2',
   },
 };
 
@@ -68,10 +30,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-        <link rel="icon" href="/logo-yuvi.svg" sizes="any" />
-        {/* Google Analytics */}
+      <body
+        className={cn(
+          'min-h-screen bg-white font-sans text-black antialiased transition-colors duration-500 ease-in-out dark:bg-black dark:text-white',
+          inter.variable
+        )}
+      >
         <Script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-QTH2CN2YRQ"
@@ -89,22 +53,8 @@ export default function RootLayout({
             `,
           }}
         />
-      </head>
-      <body
-        className={cn(
-          // "min-h-screen bg-background font-sans antialiased",
-          "min-h-screen bg-white text-black dark:bg-black dark:text-white font-sans antialiased transition-colors duration-500 ease-in-out",
-          inter.variable,
-        )}
-      >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem={false}
-        >
-          <main className="flex min-h-screen flex-col">
-            {children}
-          </main>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
+          <main className="flex min-h-screen flex-col">{children}</main>
           <Toaster />
         </ThemeProvider>
         <Analytics />
