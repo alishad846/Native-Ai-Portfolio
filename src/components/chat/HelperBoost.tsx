@@ -160,12 +160,14 @@ export default function HelperBoost({
   const [countdown, setCountdown] = useState(0);
   const [countdownLabel, setCountdownLabel] = useState('');
   const [funPreview, setFunPreview] = useState<string[]>([]);
-  const countdownTimer = useRef<ReturnType<typeof setInterval> | null>(null);
+  const countdownTimer = useRef<
+    ReturnType<typeof window.setTimeout> | ReturnType<typeof setTimeout> | null
+  >(null);
 
   useEffect(() => {
     return () => {
       if (countdownTimer.current) {
-        clearInterval(countdownTimer.current);
+        clearTimeout(countdownTimer.current);
       }
     };
   }, []);
