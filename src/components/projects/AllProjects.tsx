@@ -76,26 +76,24 @@ export default function AllProjects() {
         ) : (
           <>
             <Carousel items={cards} />
-            <div className="mt-8 space-y-6 rounded-3xl border border-neutral-200 bg-white/80 p-6 shadow-sm dark:border-neutral-700 dark:bg-neutral-900/60">
+            <div className="mt-8 space-y-4 rounded-3xl border border-neutral-200 bg-white/80 p-6 shadow-sm dark:border-neutral-700 dark:bg-neutral-900/60">
               <p className="text-xs uppercase tracking-[0.4em] text-neutral-500 dark:text-neutral-400">
                 Project summary
               </p>
-              <div className="grid gap-4 md:grid-cols-2">
+              <p className="text-sm text-neutral-600 dark:text-neutral-300">
+                My recent work spans ML-powered analytics, NLP automations, predictive modeling, and dashboard tooling—highlighted by DataInsights.ai, Resume Data Extraction, Customer Churn Prediction, and Deep Youtube Analysis. Each project combines backend automation, thoughtful analytics, and scalable architecture to make data-driven ideas feel production-ready.
+              </p>
+              <p className="text-sm text-neutral-600 dark:text-neutral-300">
+                Right now I’m refining DataInsights.ai with tighter LLM workflows and backend integration while exploring ways to make NLP automation and insights tooling more accessible to small teams. If any of these areas resonate, I’m always open to collaboration.
+              </p>
+              <div className="flex flex-wrap gap-2 text-[0.65rem] uppercase tracking-[0.35em] text-neutral-500 dark:text-neutral-300">
                 {projectsData.map((project) => (
-                  <div
-                    key={project.title}
-                    className="rounded-2xl border border-neutral-100 bg-white/90 p-4 shadow-sm dark:border-neutral-700 dark:bg-neutral-900/50"
+                  <span
+                    key={`${project.title}-chip`}
+                    className="rounded-full border border-neutral-200 px-3 py-1 dark:border-neutral-600"
                   >
-                    <p className="text-[0.7rem] uppercase tracking-[0.4em] text-neutral-500 dark:text-neutral-400">
-                      {project.category}
-                    </p>
-                    <h3 className="mt-1 text-lg font-semibold text-neutral-900 dark:text-neutral-100">
-                      {project.title}
-                    </h3>
-                    <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-300">
-                      {project.description}
-                    </p>
-                  </div>
+                    {project.title}
+                  </span>
                 ))}
               </div>
             </div>
