@@ -42,8 +42,7 @@ export function SimplifiedChatView({
     message.parts
       ?.filter((part) => {
         if (part.type !== 'tool-invocation') return false;
-        const state = part.toolInvocation?.state;
-        return state && state !== 'in_progress' && state !== 'running';
+        return part.toolInvocation?.state === 'result';
       })
       .map((part) =>
         part.type === 'tool-invocation' ? part.toolInvocation : null

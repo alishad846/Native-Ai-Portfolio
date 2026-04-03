@@ -160,9 +160,7 @@ export default function HelperBoost({
   const [countdown, setCountdown] = useState(0);
   const [countdownLabel, setCountdownLabel] = useState('');
   const [funPreview, setFunPreview] = useState<string[]>([]);
-  const countdownTimer = useRef<
-    ReturnType<typeof window.setTimeout> | ReturnType<typeof setTimeout> | null
-  >(null);
+  const countdownTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     return () => {
@@ -200,7 +198,7 @@ export default function HelperBoost({
         return;
       }
 
-      countdownTimer.current = window.setTimeout(() => {
+      countdownTimer.current = setTimeout(() => {
         setCountdown(value);
         tick(value - 1);
       }, 1000);
